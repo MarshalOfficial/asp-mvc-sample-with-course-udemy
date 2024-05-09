@@ -1,5 +1,32 @@
 ﻿@model asp_mvc_sample_with_course_udemi.ViewModels.BillViewModel
 
+<!-- Modal -->
+<div data-backdrop="static" data-keyboard="false" class="modal" id="BillModal"
+     tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">        
+        <div class="modal-content">
+            <form id="saveForm" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Bill Receipt</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label id="billNo"></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="CloseModal()" type="button" class="btn btn-secondary btnCancel" data-dismiss="modal">Close</button>
+                    <button onclick="PrintReceipt()" id="btnReceipt" type="button" class="btn btn-primary">Print Receipt</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <form asp-action="Create">
     <div class="row">
         <div class="col-4">
@@ -107,6 +134,9 @@
         </table>
     </div>
 </form>
+<div>
+    <a class="btn btn-success" onclick="SaveItemsInDb()">Final Submit</a>    
+</div>
 
 @section scripts{
     <script>
@@ -263,5 +293,33 @@
             CalculateGrandTotal();
         }
 
+        function SaveItemsInDb() 
+        {
+            var customer = $("#CustomerName").val();
+            var paymentType = $("#PaymentType").val();
+            var finalPayment = $("#GrandTotal").val();
+
+            var itemModel = {
+                CustomerName: customer,
+                Items: listItems,
+                GrandTotal: finalPayment
+            };
+
+            $.post("/bills/SaveItems", { vm: itemModel }, 
+                function (res) {
+                    $("#BillModal").modal({ backdrop: 'static', keyboard: false });
+                    $("#BillModal").modal("show");
+
+                    $("#BillModal").html(res);
+                });
+        }
+
+        printReceipt = function () {
+            $("#BillModal").printThis();
+        }
+
+        CloseModal = function () {
+            $("#BillModal").modal('hide');
+        }
     </script>
 }

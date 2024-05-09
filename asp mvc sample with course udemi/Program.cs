@@ -11,6 +11,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 
 builder.Services.AddScoped<IDbInitial, DbInitial>();
 builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IBillService, BillService>();
 
 builder.Services.AddRazorPages();
 

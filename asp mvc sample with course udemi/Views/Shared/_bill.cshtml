@@ -1,0 +1,50 @@
+﻿@using asp_mvc_sample_with_course_udemi.ViewModels
+@model BillReceiptViewModel
+
+<div class="container">
+    <!-- Row with Bill Information -->
+    <div class="row">
+        <!-- Left Column with Basic Info -->
+        <div class="col-md-6">            
+            <p><strong>Bill Number:</strong> #@Model.BillNumber</p>
+            <p><strong>From Address:</strong> @Model.FromAddress</p>
+        </div>
+        <!-- Right Column with Customer Info -->
+        <div class="col-md-6">            
+            <p><strong>Customer Name:</strong> @Model.CustomerName</p>
+            <p><strong>Total Amount:</strong> @Model.TotalAmount USD</p>
+        </div>
+    </div>
+
+    <!-- Row with Table of Bill Details -->
+    <div class="row">
+        <div class="col-12">
+            <h3>Bill Details</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Item Number</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Dis. (%)</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.BillDetails)
+                    {
+                        <tr>
+                            <td>@item.ItemId</td>
+                            <td>@item.ItemName</td>
+                            <td>@item.Price</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Discount</td>
+                            <td>@item.Total</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
