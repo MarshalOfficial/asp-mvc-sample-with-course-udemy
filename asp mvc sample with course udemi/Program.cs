@@ -10,6 +10,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IDbInitial, DbInitial>();
+builder.Services.AddScoped<IItemService, ItemService>();
 
 builder.Services.AddRazorPages();
 
