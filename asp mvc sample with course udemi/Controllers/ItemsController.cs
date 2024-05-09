@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace asp_mvc_sample_with_course_udemi.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class ItemsController : Controller
     {
         private readonly IItemService itemService;
