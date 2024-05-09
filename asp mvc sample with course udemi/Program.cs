@@ -1,12 +1,17 @@
 using asp_mvc_sample_with_course_udemi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using asp_mvc_sample_with_course_udemi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<IDbInitial, DbInitial>();
+
+builder.Services.AddRazorPages();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,6 +26,17 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+await DataSeed();
+
+async Task DataSeed()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbrepo = scope.ServiceProvider.GetRequiredService<IDbInitial>();
+        await dbrepo.SeedData();
+    }
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -31,5 +47,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
